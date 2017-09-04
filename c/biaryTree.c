@@ -75,6 +75,22 @@ void postOrder(biTree T){
 	}
 }
 
+bool PrintAncestors(biTree _root, char target)  
+{  
+    if (!_root) return false;  
+    if (_root->data == target) return true;  
+  
+    //子树可以找到，当前节点肯定为祖先节点  
+    if (PrintAncestors(_root->lchild, target) || PrintAncestors(_root->rchild, target))  
+    {  
+        printf("%c ", _root->data);
+        return true;  
+    }else{
+    	return false;
+    } 
+}  
+
+
 
 //中序遍历的非递归算法实现
 //先扫描（并非访问）根节点的所有左节点并将她们一一进栈。然后出栈-个节点*p（显然*p没有左孩子节点或者左孩子节点已经被访问过了）
@@ -203,6 +219,8 @@ int main(int argc, char const *argv[])
 	postOrder(tree);
 	printf("\n非递归postOrder:");
 	_postOrder(tree);
+	printf("\nall Ancestors:");
+	PrintAncestors(tree,'e');
 	printf("\n");
 
 	return 0;
