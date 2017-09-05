@@ -1,5 +1,6 @@
 #include<iostream>
 #include<stdio.h>
+#include<vector>
 using namespace std;
 typedef struct biTNode
 {
@@ -199,6 +200,37 @@ void _postOrder(biTree T){
 	}
 }
 
+//求两个节点之间的路径
+bool findPath(biTree root,vector<char> &path,char key){
+	if(root==NULL)
+		return false;
+	if(root->data==key){
+		return true;
+	}
+	bool find=(findPath(root->lchild,path,key) || findPath(root->rchild,path,key));
+	if(find){
+		path.push_back(root->data);
+		return true;
+	}else{
+		return false;
+	}
+}
+
+bool findLCA(biTree root,char key1,char key2,char &resp){
+    vector<char> path1,path2;
+    bool find1 = findPath(root, path1, key1);
+    bool find2 = findPath(root, path2, key2);
+    if(find1 && find2){
+        for(int i=0; i<path1.size(); i++){
+            if(path1[i] == path2[i]){
+                resp = path1[i];
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 
 
 
@@ -220,8 +252,14 @@ int main(int argc, char const *argv[])
 	printf("\n非递归postOrder:");
 	_postOrder(tree);
 	printf("\nall Ancestors:");
-	PrintAncestors(tree,'e');
-	printf("\n");
+	//PrintAncestors(tree,'e');
+	printf("\n find common Ancestors:");
+	char common;
+	bool tag = findLCA(tree,'d','e',common);
+	if(tag)
+		printf("%c\n", common);
+	else
+		printf("not find common Ancestors\n");
 
 	return 0;
 }
